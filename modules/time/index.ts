@@ -1,18 +1,8 @@
 type formatType = string;
+const isValidDate = (date: Date) => {
+  return date instanceof Date && !isNaN(date.getTime());
+};
 
-// const extractOperator = (str: string) => {
-//   // 使用正则表达式匹配数字+符号+数字的模式
-//   const regex = /^(\d+)([+\-*/])(\d+)([+\-*/])(\d+)$/;
-//   const match = str.match(regex);
-
-//   if (match) {
-//     // 如果匹配成功，match数组的索引1就是运算符号
-//     return match[2];
-//   } else {
-//     // 如果没有匹配到合适的格式，则返回null或抛出错误
-//     return null;
-//   }
-// };
 export class TimeTools {
   /**
    * 格式化时间
@@ -39,6 +29,9 @@ export class TimeTools {
   ): string {
     // 创建Date对象，用于获取时间的各个部分
     const data = new Date(date);
+    if (!isValidDate(data)) {
+      throw new Error("无效的日期");
+    }
     // 获取年份
     const year = data.getFullYear();
     // 获取月份，月份从0开始，所以需要加1，不足两位前面补0
@@ -171,7 +164,7 @@ export class TimeTools {
    * @returns {Date} 返回本周第一天的日期对象
    */
   static getFirstDayOfWeek(): Date {
-    let data = this.getWeeks()[0];
+    let data = TimeTools.getWeeks()[0];
     return data;
   }
 
@@ -179,14 +172,98 @@ export class TimeTools {
    * 获取本周的最后一天的日期
    *
    * 此方法通过获取周数数组中的最后一个元素来确定本周的最后一天
-   * 周数数组是由`this.getWeeks()`方法生成的，该方法似乎返回一个包含周数据的数组
+   * 周数数组是由`TimeTools.getWeeks()`方法生成的，该方法似乎返回一个包含周数据的数组
    *
    * @returns {Date} 本周的最后一天的日期对象
    */
   static getLastDayOfWeek(): Date {
     // 从周数数组中获取最后一个星期的数据，即本周的最后一天
-    let data = this.getWeeks()[6];
+    let data = TimeTools.getWeeks()[6];
     // 返回本周的最后一天的日期
     return data;
+  }
+
+  /**
+   * 获取指定月份的总天数
+   *
+   * 此方法通过获取月份的最后一天的日期来确定该月的总天数
+   * 之所以这样做，是因为直接获取月份的总天数在JavaScript/TypeScript中并不是一件直观的事情
+   * 通过获取最后一天的日期，可以简单地返回该日期的值，即为月份的总天数
+   *
+   * @returns {number} 指定月份的总天数
+   */
+  static getTotalDaysOfMonth(): number {
+    let data = TimeTools.getLastDayOfMonth().getDate();
+    return data;
+  }
+
+  /**
+   * 判断给定的时间是否为闰年
+   *
+   * 如果没有提供参数，或者参数是无效的日期字符串，则函数会使用当前日期进行判断
+   *
+   * @param time 可选参数，可以是一个Date对象或一个日期字符串如果未提供，将使用当前日期
+   * @returns 返回一个布尔值，如果年份是闰年则为true，否则为false
+   */
+  static isLeapYear(data?: Date | string): boolean {
+    // 将参数time赋值为新创建的Date对象，如果原time为字符串，则用该字符串创建Date对象
+    let time = data ? new Date() : new Date(data);
+    // 检查time是否为有效日期，如果是无效日期则直接返回false
+    if (!isValidDate(time)) {
+      return false;
+    }
+    // 判断是否为闰年并返回结果
+    return (
+      (time.getFullYear() % 4 === 0 && time.getFullYear() % 100 !== 0) ||
+      time.getFullYear() % 400 === 0
+    );
+  }
+
+  /**
+   * 根据给定的时间获取对应的生肖
+   * 如果没有提供时间，则使用当前时间
+   * @param time 可选参数，可以是一个Date对象或一个表示时间的字符串
+   * @returns 返回与给定时间对应的生肖字符串
+   * @throws 如果提供的time参数不是一个有效的日期，则抛出错误
+   *
+   * 此方法通过计算给定年份与1900年的差值除以12的余数，
+   * 来确定该年份对应的生肖在中国传统的十二生肖周期中是哪一个。
+   *
+   * 为什么选择1900年作为起始年份：
+   * 1900年的生肖为鼠，方便计算余数对应的生肖。
+   *
+   * 为什么抛出错误而不是返回一个空字符串或null：
+   * 为了遵循“失败快”的原则，尽早地通知调用者存在问题，而不是静默地失败。
+   */
+  static getAnimalOfYear(time?: Date | string): string {
+    // 如果提供了time参数，则使用它创建一个新的Date对象；否则，使用当前时间
+    const data = time ? new Date(time) : new Date();
+    // 检查日期是否有效，如果无效则抛出错误
+    if (!isValidDate(data)) {
+      throw new Error("无效的日期");
+    }
+    // 获取年份
+    const year = data.getFullYear();
+    // 定义起始年份为1900年，因为1900年是鼠年，方便计算
+    const defaultYear = 1900;
+    // 计算距起始年份的差值除以12的余数，用于确定生肖
+    const remainYear = (year - defaultYear) % 12;
+    // 定义十二生肖数组
+    const animals = [
+      "鼠",
+      "牛",
+      "虎",
+      "兔",
+      "龙",
+      "蛇",
+      "马",
+      "羊",
+      "猴",
+      "鸡",
+      "狗",
+      "猪",
+    ];
+    // 返回对应的生肖
+    return animals[remainYear];
   }
 }
