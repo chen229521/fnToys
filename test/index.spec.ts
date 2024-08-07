@@ -5,6 +5,7 @@ test("当前项目版本为 1.0.0", () => {
 
 import { TimeTools } from "../modules/index";
 let formatTime = TimeTools.formatTime;
+let getFirstDayOfMonth = TimeTools.getFirstDayOfMonth;
 describe("formatTime", () => {
   it("formats date to yyyy-MM-dd by default", () => {
     const date = new Date("2022-01-01T00:00:00Z").getTime();
@@ -28,5 +29,17 @@ describe("formatTime", () => {
     const date = new Date("2022-01-01T00:00:00Z").getTime();
     const result = formatTime(date, "yyyy-MM-dd unknown");
     expect(result).toBe("2022-01-01 unknown");
+  });
+});
+
+describe("getFirstDayOfMonth", () => {
+  it("should return the first day of the current month", () => {
+    const firstDayOfMonth = getFirstDayOfMonth();
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+
+    expect(firstDayOfMonth.getDate()).toBe(1);
+    expect(firstDayOfMonth.getMonth()).toBe(currentMonth);
+    expect(firstDayOfMonth.getFullYear()).toBe(currentYear);
   });
 });

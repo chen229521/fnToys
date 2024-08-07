@@ -1,7 +1,7 @@
 {
   "name": "fntoys",
   "version": "1.0.0",
-  "description": "",
+  "description": "fnToys：函数玩具=>一些日常运用频繁的简单函数，因为运用的多且代码量大，所以称为函数玩具",
   "main": "index.js",
   "scripts": {
     "test": "jest --no-cache",
