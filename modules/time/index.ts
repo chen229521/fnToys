@@ -71,11 +71,11 @@ export class TimeTools {
    * 第二个参数为月份索引，由于JavaScript中月份索引从0开始，所以需要使用`new Date().getMonth()`来获取当前月份索引
    * 第三个参数为该月的第一天，因此使用1
    *
-   * @returns {Date} 返回一个表示当前月第一天的Date对象
+   * @returns {string} 返回一个表示当前月第一天的Date对象
    */
-  static getFirstDayOfMonth(): Date {
+  static getFirstDayOfMonth(): string {
     let data = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-    return data;
+    return TimeTools.formatTime(data);
   }
 
   /**
@@ -85,11 +85,11 @@ export class TimeTools {
    * 通过创建一个Date对象并设置其年份为当前年份，月份为0（表示1月），日期为1，
    * 我们可以确保无论何时调用此方法，都能获取到正确的当前年的第一天
    *
-   * @returns {Date} 当前年的第一天的Date对象
+   * @returns {string} 当前年的第一天的Date对象
    */
-  static getFirstDayOfYear(): Date {
+  static getFirstDayOfYear(): string {
     let data = new Date(new Date().getFullYear(), 0, 1);
-    return data;
+    return TimeTools.formatTime(data);
   }
   /**
    * 获取指定月份的最后一天
@@ -98,13 +98,13 @@ export class TimeTools {
    * 该Date实例被初始化为下个月的第一天，但是年份和月份来自于当前的日期对象
    * 然后将日期设置为0，这样就得到了上个月的最后一天
    *
-   * @returns {Date} 返回一个表示指定月份最后一天的Date对象
+   * @returns {string} 返回一个表示指定月份最后一天的Date对象
    */
-  static getLastDayOfMonth(): Date {
+  static getLastDayOfMonth(): string {
     // 创建一个新的Date实例，初始化为下个月的第一天，但年份和月份基于当前日期
     let data = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0);
     // 返回上个月的最后一天
-    return data;
+    return TimeTools.formatTime(data);
   }
 
   /**
@@ -114,11 +114,11 @@ export class TimeTools {
    * 由于JavaScript的Date对象在月份的表示上是从0开始的，因此使用11表示12月
    * 而日期部分使用31来确保得到的是12月的最后一天
    *
-   * @returns {Date} 返回一个代表本年最后一天的Date对象
+   * @returns {string} 返回一个代表本年最后一天的Date对象
    */
-  static getLastDayOfYear(): Date {
+  static getLastDayOfYear(): string {
     let data = new Date(new Date().getFullYear(), 11, 31);
-    return data;
+    return TimeTools.formatTime(data);
   }
 
   /**
@@ -130,9 +130,9 @@ export class TimeTools {
    *
    * @returns {Date[]} 返回一个包含当前周每一天的日期对象数组
    */
-  static getWeeks(): Date[] {
+  static getWeeks(): string[] {
     // 初始化一个空数组，用于存储每周的日期
-    let week: Date[] = [];
+    let week: string[] = [];
     // 获取当前日期
     let currentDate = new Date();
     // 获取当前日期的星期几，0表示周日
@@ -145,11 +145,11 @@ export class TimeTools {
       currentDate.setDate(currentDate.getDate() - day + 1);
     }
     // 将周一添加到数组中
-    week.push(currentDate);
+    week.push(TimeTools.formatTime(currentDate));
     // 循环添加周二到周日到数组中
     for (let i = 0; i < 6; i++) {
       currentDate.setDate(currentDate.getDate() + 1);
-      week.push(currentDate);
+      week.push(TimeTools.formatTime(currentDate));
     }
     // 返回包含一周日期的数组
     return week;
@@ -160,9 +160,9 @@ export class TimeTools {
    *
    * 此方法通过获取周数据数组的第一周信息来计算得出本周的第一天
    *
-   * @returns {Date} 返回本周第一天的日期对象
+   * @returns {string} 返回本周第一天的日期对象
    */
-  static getFirstDayOfWeek(): Date {
+  static getFirstDayOfWeek(): string {
     let data = TimeTools.getWeeks()[0];
     return data;
   }
@@ -173,9 +173,9 @@ export class TimeTools {
    * 此方法通过获取周数数组中的最后一个元素来确定本周的最后一天
    * 周数数组是由`TimeTools.getWeeks()`方法生成的，该方法似乎返回一个包含周数据的数组
    *
-   * @returns {Date} 本周的最后一天的日期对象
+   * @returns {string} 本周的最后一天的日期对象
    */
-  static getLastDayOfWeek(): Date {
+  static getLastDayOfWeek(): string {
     // 从周数数组中获取最后一个星期的数据，即本周的最后一天
     let data = TimeTools.getWeeks()[6];
     // 返回本周的最后一天的日期
@@ -192,7 +192,11 @@ export class TimeTools {
    * @returns {number} 指定月份的总天数
    */
   static getTotalDaysOfMonth(): number {
-    let data = TimeTools.getLastDayOfMonth().getDate();
+    let data = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth() + 1,
+      0
+    ).getDate();
     return data;
   }
 
