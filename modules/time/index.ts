@@ -2,7 +2,6 @@ type formatType = string;
 const isValidDate = (date: Date) => {
   return date instanceof Date && !isNaN(date.getTime());
 };
-
 export class TimeTools {
   /**
    * 格式化时间
