@@ -97,7 +97,7 @@ export declare class TimeTools {
      *
      * @returns {number} 指定月份的总天数
      */
-    static getTotalDaysOfMonth(): number;
+    static getTotalDaysOfMonth(date?: string): number;
     /**
      * 判断给定的时间是否为闰年
      *

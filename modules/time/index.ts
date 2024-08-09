@@ -1,3 +1,4 @@
+import { BaseTools } from "../base";
 type formatType = string;
 const isValidDate = (date: Date) => {
   return date instanceof Date && !isNaN(date.getTime());
@@ -191,10 +192,15 @@ export class TimeTools {
    *
    * @returns {number} 指定月份的总天数
    */
-  static getTotalDaysOfMonth(): number {
+  static getTotalDaysOfMonth(date?: string): number {
+    let inputDate = date ? new Date(date) : new Date();
+    if (!isValidDate(inputDate)) {
+      throw new Error("Invalid date");
+    }
+    // @ts-ignore
     let data = new Date(
-      new Date().getFullYear(),
-      new Date().getMonth() + 1,
+      new Date(inputDate).getFullYear(),
+      new Date(inputDate).getMonth() + 1,
       0
     ).getDate();
     return data;
