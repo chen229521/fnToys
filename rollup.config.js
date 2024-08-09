@@ -1,8 +1,9 @@
 import json from "rollup-plugin-json";
 import typescript from "rollup-plugin-typescript2";
 import sourceMaps from "rollup-plugin-sourcemaps";
-
-const libraryName = "@iwowen/utils";
+import babel from "rollup-plugin-babel";
+import { DEFAULT_EXTENSIONS } from "@babel/core";
+const libraryName = "fntoys";
 
 export default {
   input: "modules/index.ts",
@@ -12,6 +13,10 @@ export default {
   ],
   plugins: [
     json(),
+    // babel({
+    //   exclude: "node_modules/**",
+    //   extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"],
+    // }),
     typescript({
       exclude: "node_modules/**",
       typescript: require("typescript"),

@@ -1,8 +1,10 @@
 {
   "name": "fntoys",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "fnToys：函数玩具=>一些日常运用频繁的简单函数，因为运用的多且代码量大，所以称为函数玩具",
-  "main": "index.js",
+  "main": "lib/main.umd.js",
+  "module": "lib/main.esm.js",
+  "typings": "lib/index.d.ts",
   "scripts": {
     "test": "jest --no-cache",
     "commit": "cz",
@@ -11,9 +13,9 @@
     "doc:gh-fix": "echo test> docs/.nojekyll"
   },
   "keywords": [
-    "iwowen",
+    "fntoys",
     "utils",
-    "lodash",
+    "tools",
     "es",
     "typescript"
   ],
@@ -40,5 +42,8 @@
     "commitizen": {
       "path": "./node_modules/cz-customizable"
     }
+  },
+  "dependencies": {
+    "rollup-plugin-babel": "^4.4.0"
   }
 }

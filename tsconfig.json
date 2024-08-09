@@ -10,7 +10,7 @@
         ],
         "sourceMap": true,
         "declaration": true,
-        "declarationDir": "lib/types",
+        "declarationDir": "lib",
         "typeRoots": [
             "node_modules/@types"
         ],
